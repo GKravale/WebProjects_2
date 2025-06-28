@@ -6,8 +6,9 @@ use App\Models\Artist;
 use Illuminate\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controllers\HasMiddleware;
 
-class ArtistController extends Controller
+class ArtistController extends Controller implements HasMiddleware
 {
     //display all Artists
     public function list(): View // read
@@ -68,4 +69,20 @@ class ArtistController extends Controller
 
         return redirect('/artists');
     }
+
+    public function delete(Artist $artist): RedirectResponse
+    {
+        $artist->delete();
+        return redirect('/artists');
+    }
+
+    public static function middleware(): array
+    {
+        return [
+            'auth',
+        ];
+    }
+
+
+
 }
